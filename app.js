@@ -80,7 +80,8 @@ app.post("/api/books/:bookId/reviews", async (request, response, next) => {
     const bookId = Number(request.params.bookId)
     const {reviewer, rating, comment} = request.body;
     const newReview = {
-      reviewer, rating, comment, bookId
+      reviewer, rating, comment, bookId // we need to conneted bookId with newReview, so pass the bookId,
+      //  and it is the foreigner key in Review and the primary key in Book.
     }
     
     
