@@ -1,4 +1,5 @@
 //part2
+const dbConnection = require('../db')
 //  Require both Book and Review at the top.
 const Review = require('./review')
 const Book = require('./book') 
@@ -16,6 +17,9 @@ Review.belongsTo(Book, {
 //end
 
 //Export both models from this file.
-module.exports = Review
-module.exports = Book
+module.exports = {Review, Book}
+// we can't have two exports 
+// such as :
+//          module.exports = Review
+//          module.exports = Book
 //end

@@ -5,8 +5,8 @@ const cors = require("cors");
 const db = require('./db/index')
 // const Book = require('./models/book')
 //In app.js, update your require for Book to come from ./models (the index file) 
-const Book = require('./models')
-const Review = require('./models')
+const Book = require('./models').Book
+const Review = require('./models').Review
 
 
 const app = express();
@@ -39,7 +39,14 @@ app.get("/api/books", async (request, response, next) => {
 app.get("/api/books/:id", async (request, response, next) => {
   try {
     const id = Number(request.params.id); 
-    const book = await Book.findByPk(id)
+    // const book = await Book.findByPk(id)
+
+    //Part3: update GET /api/books/:id:
+    //Pass an extra option to your find-by-pk call that tells it to also load the book's associated reviews.
+    const book = await Book.findByPk(id, {
+      include: Review
+    })
+    //end
 
     if (!book) {
       return response.sendStatus(404);
