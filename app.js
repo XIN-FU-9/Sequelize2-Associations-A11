@@ -2,11 +2,16 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 
-const db = require('./db/index')
+const db = require('./db/index');
+// const { create } = require("node:domain");
+// const Review  = require("./models");
 // const Book = require('./models/book')
 //In app.js, update your require for Book to come from ./models (the index file) 
-const Book = require('./models').Book
-const Review = require('./models').Review
+// const Book = require('./models').Book
+// const Review = require('./models').Review
+// since in models/index.js , this is a line :module.exports = {Review, Book},
+// this is an object so we use .Book and .Review
+const {Review, Book} = require('./models')
 
 
 const app = express();
@@ -68,7 +73,29 @@ app.post("/api/books", async (request, response, next) => {
   }
 });
 
-// Part 6: PATCH an existing book — only changes the fields that were sent
+//Part 4: Create Reviews
+//Add a new route to app.js:
+app.post("/api/books/:bookId/reviews", async (request, response, next) => {
+  try{
+    const bookId = Number(request.params.bookId)
+    const {reviewer, rating, comment} = request.body;
+    const newReview = {
+      reviewer, rating, comment, bookId
+    }
+    
+    
+    
+    // await Review.create({reviewer, rating, comment})
+    await Review.create(newReview)
+    response.status(201).json(newReview);
+  }catch(error){
+    next(error);
+  }
+})
+// end
+
+
+// PATCH an existing book — only changes the fields that were sent
 app.patch("/api/books/:id", async(request, response, next) => {
   try {
     const id = Number(request.params.id);
