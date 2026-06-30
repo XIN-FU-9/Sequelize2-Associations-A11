@@ -3,7 +3,11 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 const db = require('./db/index')
-const Book = require('./models/book')
+// const Book = require('./models/book')
+//In app.js, update your require for Book to come from ./models (the index file) 
+const Book = require('./models')
+const Review = require('./models')
+
 
 const app = express();
 const PORT = 8080;
@@ -15,6 +19,7 @@ app.use(cors()); // allows a future frontend (different origin) to call this API
 
 
 // routes --------------------------------------------
+
 
 app.get("/", (request, response) => {
   response.send("Books API is running");
