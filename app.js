@@ -83,9 +83,6 @@ app.post("/api/books/:bookId/reviews", async (request, response, next) => {
       reviewer, rating, comment, bookId // we need to conneted bookId with newReview, so pass the bookId,
       //  and it is the foreigner key in Review and the primary key in Book.
     }
-    
-    
-    
     // await Review.create({reviewer, rating, comment})
     await Review.create(newReview)
     response.status(201).json(newReview);
@@ -94,6 +91,22 @@ app.post("/api/books/:bookId/reviews", async (request, response, next) => {
   }
 })
 // end
+
+//Stretch Challeges:
+//Add GET /api/books/:bookId/reviews — 
+//return all reviews for one book without loading the whole book object.
+app.get('/api/books/:bookId/reviews', async(request, response, next) => {
+  try{                
+      const bookId = Number(request.params.bookId)
+      const allReviews = await Review.findAll({ // we need find from the Review table, so we need use Review.findAll
+        where: {bookId : bookId}
+      })
+      response.json(allReviews)
+
+  }catch(error){
+    next(error);
+  }
+})
 
 
 // PATCH an existing book — only changes the fields that were sent
